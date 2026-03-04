@@ -44,13 +44,14 @@ def predict():
         probability = pipeline.predict_proba(df)[0][1]
 
         # Risk Level Calculation
-        if probability < 0.10:
+        prob_percent = float(probability) * 100
+        if prob_percent < 10:
             risk_level = "Very Low Risk"
-        elif probability < 0.20:
+        elif prob_percent < 20:
             risk_level = "Low Risk"
-        elif probability < 0.35:
+        elif prob_percent < 35:
             risk_level = "Moderate Risk"
-        elif probability < 0.50:
+        elif prob_percent < 50:
             risk_level = "High Risk"
         else:
             risk_level = "Very High Risk"

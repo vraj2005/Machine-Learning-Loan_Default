@@ -14,13 +14,13 @@ export default function LoanForm() {
     LoanTerm: "",
     DTIRatio: "",
     NumCreditLines: "",
-    HasMortgage: "0",
-    HasDependents: "0",
-    HasCoSigner: "0",
-    Education: "High School",
-    EmploymentType: "Full Time",
-    MaritalStatus: "Married",
-    LoanPurpose: "Business",
+    HasMortgage: "",
+    HasDependents: "",
+    HasCoSigner: "",
+    Education: "",
+    EmploymentType: "",
+    MaritalStatus: "",
+    LoanPurpose: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,6 +35,200 @@ export default function LoanForm() {
   };
 
   const toNumber = (value) => (value === "" ? 0 : Number(value));
+
+  const presetPayloads = {
+    "Very Low Risk": {
+      Age: 38,
+      Income: 65000,
+      LoanAmount: 30000,
+      CreditScore: 690,
+      MonthsEmployed: 72,
+      NumCreditLines: 4,
+      InterestRate: 11,
+      LoanTerm: 48,
+      DTIRatio: 0.3,
+      HasMortgage: 1,
+      HasDependents: 1,
+      HasCoSigner: 0,
+      "Education_High School": false,
+      "Education_Master's": true,
+      Education_PhD: false,
+      "EmploymentType_Part-time": false,
+      "EmploymentType_Self-employed": false,
+      EmploymentType_Unemployed: false,
+      MaritalStatus_Married: true,
+      MaritalStatus_Single: false,
+      LoanPurpose_Business: false,
+      LoanPurpose_Education: true,
+      LoanPurpose_Home: false,
+      LoanPurpose_Other: false,
+    },
+    "Low Risk": {
+      Age: 34,
+      Income: 42000,
+      LoanAmount: 55000,
+      CreditScore: 610,
+      MonthsEmployed: 36,
+      NumCreditLines: 3,
+      InterestRate: 14.5,
+      LoanTerm: 48,
+      DTIRatio: 0.42,
+      HasMortgage: 0,
+      HasDependents: 1,
+      HasCoSigner: 0,
+      "Education_High School": true,
+      "Education_Master's": false,
+      Education_PhD: false,
+      "EmploymentType_Part-time": true,
+      "EmploymentType_Self-employed": false,
+      EmploymentType_Unemployed: false,
+      MaritalStatus_Married: false,
+      MaritalStatus_Single: true,
+      LoanPurpose_Business: false,
+      LoanPurpose_Education: true,
+      LoanPurpose_Home: false,
+      LoanPurpose_Other: false,
+    },
+    "Moderate Risk": {
+      Age: 27,
+      Income: 25000,
+      LoanAmount: 80000,
+      CreditScore: 520,
+      MonthsEmployed: 18,
+      NumCreditLines: 2,
+      InterestRate: 20,
+      LoanTerm: 60,
+      DTIRatio: 0.65,
+      HasMortgage: 0,
+      HasDependents: 1,
+      HasCoSigner: 0,
+      "Education_High School": true,
+      "Education_Master's": false,
+      Education_PhD: false,
+      "EmploymentType_Part-time": false,
+      "EmploymentType_Self-employed": true,
+      EmploymentType_Unemployed: false,
+      MaritalStatus_Married: false,
+      MaritalStatus_Single: true,
+      LoanPurpose_Business: true,
+      LoanPurpose_Education: false,
+      LoanPurpose_Home: false,
+      LoanPurpose_Other: false,
+    },
+    "High Risk": {
+      Age: 22,
+      Income: 15000,
+      LoanAmount: 120000,
+      CreditScore: 410,
+      MonthsEmployed: 4,
+      NumCreditLines: 1,
+      InterestRate: 25,
+      LoanTerm: 72,
+      DTIRatio: 0.85,
+      HasMortgage: 0,
+      HasDependents: 1,
+      HasCoSigner: 0,
+      "Education_High School": true,
+      "Education_Master's": false,
+      Education_PhD: false,
+      "EmploymentType_Part-time": false,
+      "EmploymentType_Self-employed": false,
+      EmploymentType_Unemployed: true,
+      MaritalStatus_Married: false,
+      MaritalStatus_Single: true,
+      LoanPurpose_Business: false,
+      LoanPurpose_Education: false,
+      LoanPurpose_Home: false,
+      LoanPurpose_Other: true,
+    },
+    "Very High Risk": {
+      Age: 22,
+      Income: 15000,
+      LoanAmount: 120000,
+      CreditScore: 410,
+      MonthsEmployed: 4,
+      NumCreditLines: 1,
+      InterestRate: 25,
+      LoanTerm: 72,
+      DTIRatio: 0.85,
+      HasMortgage: 0,
+      HasDependents: 1,
+      HasCoSigner: 0,
+      "Education_High School": true,
+      "Education_Master's": false,
+      Education_PhD: false,
+      "EmploymentType_Part-time": false,
+      "EmploymentType_Self-employed": false,
+      EmploymentType_Unemployed: true,
+      MaritalStatus_Married: false,
+      MaritalStatus_Single: true,
+      LoanPurpose_Business: false,
+      LoanPurpose_Education: false,
+      LoanPurpose_Home: false,
+      LoanPurpose_Other: true,
+    },
+  };
+
+  const mapPayloadToForm = (payload) => {
+    const education = payload["Education_Master's"]
+      ? "Master's"
+      : payload.Education_PhD
+      ? "PhD"
+      : payload["Education_High School"]
+      ? "High School"
+      : "";
+
+    const employment = payload["EmploymentType_Part-time"]
+      ? "Part Time"
+      : payload["EmploymentType_Self-employed"]
+      ? "Self Employed"
+      : payload.EmploymentType_Unemployed
+      ? "Unemployed"
+      : "Full Time";
+
+    const marital = payload.MaritalStatus_Married
+      ? "Married"
+      : payload.MaritalStatus_Single
+      ? "Single"
+      : "";
+
+    const purpose = payload.LoanPurpose_Business
+      ? "Business"
+      : payload.LoanPurpose_Education
+      ? "Education"
+      : payload.LoanPurpose_Home
+      ? "Home"
+      : payload.LoanPurpose_Other
+      ? "Other"
+      : "";
+
+    return {
+      Age: String(payload.Age ?? ""),
+      Income: String(payload.Income ?? ""),
+      CreditScore: String(payload.CreditScore ?? ""),
+      MonthsEmployed: String(payload.MonthsEmployed ?? ""),
+      LoanAmount: String(payload.LoanAmount ?? ""),
+      InterestRate: String(payload.InterestRate ?? ""),
+      LoanTerm: String(payload.LoanTerm ?? ""),
+      DTIRatio: String(payload.DTIRatio ?? ""),
+      NumCreditLines: String(payload.NumCreditLines ?? ""),
+      HasMortgage: String(payload.HasMortgage ?? ""),
+      HasDependents: String(payload.HasDependents ?? ""),
+      HasCoSigner: String(payload.HasCoSigner ?? ""),
+      Education: education,
+      EmploymentType: employment,
+      MaritalStatus: marital,
+      LoanPurpose: purpose,
+    };
+  };
+
+  const applyPreset = (label) => {
+    const payload = presetPayloads[label];
+    if (!payload) return;
+    setFormData(mapPayloadToForm(payload));
+    setResult(null);
+    setError("");
+  };
 
   const buildPayload = () => {
     const payload = {
@@ -112,6 +306,22 @@ export default function LoanForm() {
         <div className="rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-xs text-[var(--text-muted)]">
           Powered by ML pipeline and risk signals
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        {Object.keys(presetPayloads).map((label) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => applyPreset(label)}
+            className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-2 text-xs font-semibold text-[var(--text)] shadow-sm transition hover:-translate-y-0.5"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3Z" />
+            </svg>
+            {label}
+          </button>
+        ))}
       </div>
 
       <form onSubmit={handleSubmit} className="grid gap-6">
@@ -236,6 +446,7 @@ export default function LoanForm() {
                   onChange={handleChange}
                   className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)]"
                 >
+                  <option value="">Select</option>
                   <option value="0">No</option>
                   <option value="1">Yes</option>
                 </select>
@@ -269,6 +480,7 @@ export default function LoanForm() {
                 onChange={handleChange}
                 className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)]"
               >
+                <option value="">Select</option>
                 <option>High School</option>
                 <option>Master's</option>
                 <option>PhD</option>
@@ -303,6 +515,7 @@ export default function LoanForm() {
                 onChange={handleChange}
                 className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)]"
               >
+                <option value="">Select</option>
                 <option>Full Time</option>
                 <option>Part Time</option>
                 <option>Self Employed</option>
@@ -339,6 +552,7 @@ export default function LoanForm() {
                 onChange={handleChange}
                 className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)]"
               >
+                <option value="">Select</option>
                 <option>Married</option>
                 <option>Single</option>
               </select>
@@ -372,6 +586,7 @@ export default function LoanForm() {
                 onChange={handleChange}
                 className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-3 text-sm text-[var(--text)] outline-none transition focus:border-[var(--accent)]"
               >
+                <option value="">Select</option>
                 <option>Business</option>
                 <option>Education</option>
                 <option>Home</option>

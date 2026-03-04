@@ -3,7 +3,25 @@ export default function ResultCard({ result }) {
 
   const probability = Number(result.probability ?? 0);
   const probabilityPercent = probability > 1 ? probability : probability * 100;
-  const isHighRisk = result.prediction === 1 || probabilityPercent >= 50;
+  const riskTiers = [
+    { label: "Very Low Risk", min: 0, max: 15, color: "var(--success)" },
+    { label: "Low Risk", min: 15, max: 35, color: "var(--success)" },
+    { label: "Moderate Risk", min: 35, max: 60, color: "#f59e0b" },
+    { label: "High Risk", min: 60, max: 80, color: "var(--danger)" },
+    { label: "Very High Risk", min: 80, max: 101, color: "var(--danger)" },
+  ];
+
+  const tierByProbability =
+    riskTiers.find(
+      (tier) => probabilityPercent >= tier.min && probabilityPercent < tier.max
+    ) || riskTiers[0];
+
+  const tierByLabel = riskTiers.find(
+    (tier) => tier.label === result.risk_level
+  );
+
+  const activeTier = tierByLabel || tierByProbability;
+  const isHighRisk = ["High Risk", "Very High Risk"].includes(activeTier.label);
 
   return (
     <div className="glass-card glow-border mt-6 rounded-3xl p-6">
@@ -12,23 +30,18 @@ export default function ResultCard({ result }) {
           <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-soft)]">
             Prediction Result
           </p>
-          <h3 className="font-display text-2xl text-[var(--text)]">{
-            isHighRisk ? "High Risk" : "Low Risk"
-          }</h3>
+          <h3 className="font-display text-2xl text-[var(--text)]">
+            {activeTier.label}
+          </h3>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Probability of default: {probabilityPercent.toFixed(2)}%
           </p>
         </div>
         <div
-          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-            isHighRisk ? "bg-[var(--danger)]/15" : "bg-[var(--success)]/15"
-          }`}
+          className="flex h-12 w-12 items-center justify-center rounded-2xl"
+          style={{ backgroundColor: `color-mix(in srgb, ${activeTier.color} 18%, transparent)` }}
         >
-          <span
-            className={`text-sm font-semibold ${
-              isHighRisk ? "text-[var(--danger)]" : "text-[var(--success)]"
-            }`}
-          >
+          <span className="text-sm font-semibold" style={{ color: activeTier.color }}>
             {isHighRisk ? "!" : "OK"}
           </span>
         </div>
