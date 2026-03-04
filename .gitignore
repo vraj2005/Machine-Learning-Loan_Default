@@ -1,4 +1,18 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-.pkl
-.joblib
+*.py[cod]
+
+# Model artifacts
+*.pkl
+*.joblib
+
+# Node modules
+node_modules/
+
+# Build outputs
+.next/
+out/
+
+# Env files
+.env
+.env.*
