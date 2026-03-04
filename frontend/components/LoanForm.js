@@ -308,13 +308,13 @@ export default function LoanForm() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-4 pb-5">
         {Object.keys(presetPayloads).map((label) => (
           <button
             key={label}
             type="button"
             onClick={() => applyPreset(label)}
-            className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[color:var(--surface)]/70 px-4 py-2 text-xs font-semibold text-[var(--text)] shadow-sm transition hover:-translate-y-0.5"
+            className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[color:var(--surface)]/70 px-5 py-2 text-xs font-semibold text-[var(--text)] shadow-sm transition hover:-translate-y-0.5"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3Z" />
