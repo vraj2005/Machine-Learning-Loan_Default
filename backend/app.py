@@ -7,10 +7,10 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-MODEL_PATH = os.path.join("model", "pipeline.joblib")
+MODEL_PATH = os.path.join("Model", "pipeline.joblib")
 pipeline = joblib.load(MODEL_PATH)
 
-# Get expected feature order from pipeline
+# Expected column order
 EXPECTED_COLUMNS = pipeline.feature_names_in_
 
 # Home Route
@@ -18,35 +18,54 @@ EXPECTED_COLUMNS = pipeline.feature_names_in_
 def home():
     return jsonify({"message": "Loan Default Prediction API Running"})
 
+
 # Prediction Route
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
         data = request.json
-        # Convert input JSON to DataFrame
+
+        # Convert JSON to DataFrame
         df = pd.DataFrame([data])
+
         # Ensure all expected columns exist
         for col in EXPECTED_COLUMNS:
             if col not in df.columns:
                 df[col] = 0
-        # Ensure correct column order
+
+        # Ensure correct order
         df = df[EXPECTED_COLUMNS]
-        # Convert boolean to int (important)
+
+        # Convert boolean → numeric
         df = df.astype(float)
 
-        # Make prediction
+        # Model prediction
         prediction = pipeline.predict(df)[0]
         probability = pipeline.predict_proba(df)[0][1]
 
+        # Risk Level Calculation
+        if probability < 0.20:
+            risk_level = "Very Low Risk"
+        elif probability < 0.40:
+            risk_level = "Low Risk"
+        elif probability < 0.60:
+            risk_level = "Moderate Risk"
+        elif probability < 0.80:
+            risk_level = "High Risk"
+        else:
+            risk_level = "Very High Risk"
+
         return jsonify({
             "prediction": int(prediction),
-            "probability": round(float(probability), 4)
+            "probability": round(float(probability), 4),
+            "risk_level": risk_level
         })
 
     except Exception as e:
         return jsonify({
             "error": str(e)
         }), 400
+
 
 # Run Server
 if __name__ == "__main__":
