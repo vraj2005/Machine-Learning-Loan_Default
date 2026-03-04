@@ -46,7 +46,7 @@ export default function Hero() {
             <div className="rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 p-4">
               <div className="flex items-center justify-between text-sm text-[var(--text-muted)]">
                 <span>Average Risk Score</span>
-                <span className="text-[var(--text)]">0.23</span>
+                <span className="text-[var(--text)]">0.12</span>
               </div>
               <div className="mt-3 h-2 rounded-full bg-[var(--border)]">
                 <div className="h-2 w-[35%] rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-strong)]" />
@@ -55,7 +55,7 @@ export default function Hero() {
             <div className="rounded-2xl border border-[var(--border)] bg-[color:var(--surface)]/70 p-4">
               <div className="flex items-center justify-between text-sm text-[var(--text-muted)]">
                 <span>Defaults Prevented</span>
-                <span className="text-[var(--text)]">72%</span>
+                <span className="text-[var(--text)]">64%</span>
               </div>
               <p className="mt-2 text-xs text-[var(--text-soft)]">
                 Early risk detection reduces portfolio losses.
@@ -63,10 +63,10 @@ export default function Hero() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "Accuracy", value: "94.8%" },
-                { label: "Latency", value: "280ms" },
-                { label: "Coverage", value: "16k" },
-                { label: "Signals", value: "22" },
+                { label: "Accuracy", value: "88.5%" },
+                { label: "Latency", value: "35ms" },
+                { label: "Coverage", value: "255k" },
+                { label: "Signals", value: "24" },
               ].map((item) => (
                 <div
                   key={item.label}
