@@ -5,6 +5,7 @@ __pycache__/
 # Model artifacts
 *.pkl
 *.joblib
+!backend/Model/pipeline.joblib
 
 # Node modules
 node_modules/
