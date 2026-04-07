@@ -51,7 +51,7 @@ def predict():
             risk_level = "Low Risk"
         elif prob_percent < 35:
             risk_level = "Moderate Risk"
-        elif prob_percent < 50:
+        elif prob_percent < 40:
             risk_level = "High Risk"
         else:
             risk_level = "Very High Risk"
