@@ -9,7 +9,7 @@ The project follows a **complete ML lifecycle**, including data exploration, pre
 ---
 
 ## 🎯 Problem Statement
-
+ 
 Loan default prediction is a critical task in the financial sector.
 The objective of this project is to **classify loan applicants as defaulters or non-defaulters** using historical data, helping financial institutions reduce risk and make informed lending decisions.
 
